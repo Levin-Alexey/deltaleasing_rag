@@ -69,6 +69,7 @@ def parse_docx_with_images(filepath: str) -> list[str]:
     
     # Пространства имен XML для поиска картинок внутри структуры DOCX
     NS = {
+        'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
         'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
         'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
     }
@@ -87,7 +88,7 @@ def parse_docx_with_images(filepath: str) -> list[str]:
                 has_content = True
                 
             # 2. Ищем спрятанные изображения (теги <w:drawing>)
-            drawings = run.element.findall('.//w:drawing')
+            drawings = run.element.findall('.//w:drawing', NS)
             for drawing in drawings:
                 blips = drawing.findall('.//a:blip', NS)
                 for blip in blips:
